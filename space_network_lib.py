@@ -24,7 +24,7 @@ class OutOfRangeError(CommsError):
     pass
 
 
-class Packet:
+class Packet(CommsError):
     def __init__(self, data, sender, receiver):
         self.data = data
         self.sender = sender
