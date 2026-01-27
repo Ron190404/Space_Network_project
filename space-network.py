@@ -37,32 +37,34 @@ class RelaySatellite(SpaceEntity):
 
             print(f"Final destination reached: {packet.data}")
 
+def smart_send_packet(network, current, path):
+
+
+        current_packet = Packet(current, path[-2], path[-1])
+
+        for i in range(len(path) - 3, -1, -1):
+
+            current_packet = RelayPacket(current_packet, path[i], path[i + 1])
+
+
+        attempt_transmission(network, current_packet)
+
 
 if __name__ == "__main__":
     network = SpaceNetwork(level=0)
 
+    # Tes entités (assure-toi qu'elles ont toutes le .network = network)
+    entities = [
+        RelaySatellite("Earth", 0),
+        RelaySatellite("Sat1", 100),
+        RelaySatellite("Sat2", 200),
+        RelaySatellite("Sat3", 300),
+        RelaySatellite("Sat4", 400)
 
-
-    earth = RelaySatellite("Earth", 0)
-    sat1 = RelaySatellite("Sat1", 100)
-    sat2 = RelaySatellite("Sat2", 200)
-    sat3 = RelaySatellite("Sat3", 300)
-    sat4 = RelaySatellite("Sat4", 400)
-
-    for s in [earth, sat1, sat2, sat3, sat4]:
+    ]
+    for s in entities:
         s.network = network
 
-    p_final = Packet("Hello From Earth!", earth, sat4)
+    print("--- Test automate road (step 6) ---")
 
-    p_relay3 = RelayPacket(p_final, earth, sat3)
-
-    p_relay2 = RelayPacket(p_relay3, earth, sat2)
-
-    p_onion = RelayPacket(p_relay2, earth, sat1)
-
-
-    print("--- starting road onion ---")
-    try:
-        attempt_transmission(network, p_onion)
-    except BrokenConnectionError:
-        print("the chain broke along the way")
+    smart_send_packet(network, "Message Automatique!", entities)
