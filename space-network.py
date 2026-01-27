@@ -21,7 +21,7 @@ class RelayPacket(Packet):
         self.packet_to_relay = packet_to_relay
 
     def _repr_(self):
-        return (f"RelayPacket (Relaying {self.packet_to_relay.content} "
+        return (f"RelayPacket (Relaying {self.packet_to_relay.data} "
                 f"to {self.packet_to_relay.receiver}) from {self.sender}")
 
 
@@ -35,31 +35,34 @@ class RelaySatellite(SpaceEntity):
             attempt_transmission(self.network, inner_packet)
         else:
 
-            print(f"Final destination reached: {packet.content}")
-
+            print(f"Final destination reached: {packet.data}")
 
 
 if __name__ == "__main__":
-
     network = SpaceNetwork(level=0)
+
 
 
     earth = RelaySatellite("Earth", 0)
     sat1 = RelaySatellite("Sat1", 100)
     sat2 = RelaySatellite("Sat2", 200)
+    sat3 = RelaySatellite("Sat3", 300)
+    sat4 = RelaySatellite("Sat4", 400)
 
-    earth.network = network
-    sat1.network = network
-    sat2.network = network
+    for s in [earth, sat1, sat2, sat3, sat4]:
+        s.network = network
+
+    p_final = Packet("Hello From Earth!", earth, sat4)
+
+    p_relay3 = RelayPacket(p_final, earth, sat3)
+
+    p_relay2 = RelayPacket(p_relay3, earth, sat2)
+
+    p_onion = RelayPacket(p_relay2, earth, sat1)
 
 
-    p_final = Packet("Hello from Earth!", earth, sat2)
-
-
-    p_relay = RelayPacket(p_final, earth, sat1)
-
-    print("--- start of relayed transmission ---")
+    print("--- starting road onion ---")
     try:
-        attempt_transmission(network, p_relay)
+        attempt_transmission(network, p_onion)
     except BrokenConnectionError:
-        print("The relay chain has failed (Fault or Distance)")
+        print("the chain broke along the way")
