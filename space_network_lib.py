@@ -44,6 +44,7 @@ class SpaceEntity(ABC):
 
     @abstractmethod
     def receive_signal(self, packet: Packet):
+
         pass
 
 
