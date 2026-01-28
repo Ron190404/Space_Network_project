@@ -1,9 +1,15 @@
+<<<<<<< Updated upstream
 from space_network_lib import Packet, SpaceNetwork, SpaceEntity
 
 
 
 class BrokenConnectionError(Exception):
     pass
+=======
+from main import message
+from space_network_lib import Packet, SpaceNetwork, SpaceEntity,BrokenConnectionError,SecurityBreachError
+
+>>>>>>> Stashed changes
 
 
 def attempt_transmission(network, packet):

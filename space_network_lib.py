@@ -1,10 +1,8 @@
 from abc import ABC, abstractmethod
 import random
 
-
 class CommsError(Exception):
     """Base class for communication errors."""
-
     pass
 
 
@@ -23,6 +21,11 @@ class DataCorruptedError(CommsError):
 class OutOfRangeError(CommsError):
     pass
 
+class SecurityBreachError(Exception):
+    pass
+
+class BrokenConnectionError(Exception):
+    pass
 
 class Packet(CommsError):
     def __init__(self, data, sender, receiver):
@@ -44,7 +47,6 @@ class SpaceEntity(ABC):
 
     @abstractmethod
     def receive_signal(self, packet: Packet):
-
         pass
 
 

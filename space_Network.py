@@ -18,8 +18,8 @@ def attempt_transmission(packet):
         except TemporalInterferenceError:
             print("Interference détected... wait 2s")
             time.sleep(2)
-        except DataCorruptedError:
-            print("Donnée failed... new essai now")
+        except DataCorruptedError as e:
+            print("Donnée failed... new essai now",e)
 
 
 attempt_transmission(p)
