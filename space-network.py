@@ -1,4 +1,3 @@
-from main import message
 from space_network_lib import Packet, SpaceNetwork, SpaceEntity
 
 class SecurityBreachError(Exception):
@@ -8,6 +7,11 @@ class SecurityBreachError(Exception):
 
 class BrokenConnectionError(Exception):
     pass
+=======
+from main import message
+from space_network_lib import Packet, SpaceNetwork, SpaceEntity,BrokenConnectionError,SecurityBreachError
+
+
 
 
 def attempt_transmission(network, packet):
